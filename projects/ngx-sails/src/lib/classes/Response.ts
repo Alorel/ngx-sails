@@ -12,7 +12,7 @@ export abstract class Response implements Omit<ISailsResponse, 'data'> {
 
   public readonly status: number;
 
-  public constructor(response: IRawSailsResponse, request: ISailsRequest) {
+  protected constructor(response: IRawSailsResponse, request: ISailsRequest) {
     if (typeof <any>response === 'string') {
       try {
         response = JSON.parse(<any>response);

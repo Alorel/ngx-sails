@@ -1,2 +1,4 @@
 /** Basic object type */
-export type AnyObject<T = any> = { [k: string]: T };
+export interface AnyObject<T = any> {
+  [k: string]: T;
+}

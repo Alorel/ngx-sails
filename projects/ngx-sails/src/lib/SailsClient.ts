@@ -1,6 +1,5 @@
-import {Inject, Injectable, Injector, Optional} from '@angular/core';
+import {Inject, Injectable, Injector, OnDestroy, Optional} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
 import * as _io from 'socket.io-client';
 import {SailsError} from './classes/SailsError';
 import {SailsResponse} from './classes/SailsResponse';
@@ -22,7 +21,7 @@ const _errorsSbj: unique symbol = Symbol('errorsSbj');
 const _sendRequest: unique symbol = Symbol('sendRequest');
 
 @Injectable({providedIn: 'root'})
-export class SailsClient {
+export class SailsClient implements OnDestroy {
 
   public readonly configuration: Readonly<NgxSailsConfig>;
 
@@ -30,12 +29,16 @@ export class SailsClient {
 
   public readonly requestErrors: Observable<SailsError>;
 
-  private readonly [_defaultHeaders]: { [k: string]: any };
+  /** @internal */
+  private readonly [_defaultHeaders]: AnyObject<any>;
 
+  /** @internal */
   private readonly [_uri]: string;
 
+  /** @internal */
   private readonly [_cfg]: SocketIOClient.ConnectOpts;
 
+  /** @internal */
   private readonly [_errorsSbj]: Subject<SailsError>;
 
   public constructor(
@@ -99,6 +102,11 @@ export class SailsClient {
     return this[_sendRequest](url, RequestMethod.HEAD, undefined, opts);
   }
 
+  /** @inheritDoc */
+  public ngOnDestroy(): void {
+    this[_errorsSbj].complete();
+  }
+
   public on<T = any>(event: string): Observable<T> {
     return new Observable<T>(subscriber => {
       function next(msg: any): void {
@@ -110,6 +118,10 @@ export class SailsClient {
         this.io.off(event, next);
       });
     });
+  }
+
+  public options<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
+    return this[_sendRequest](url, RequestMethod.OPTIONS, undefined, opts);
   }
 
   public patch<T = any>(url: string, body?: AnyObject, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
@@ -124,6 +136,7 @@ export class SailsClient {
     return this[_sendRequest](url, RequestMethod.PUT, body, opts);
   }
 
+  /** @internal */
   private [_sendRequest](
     url: string,
     method: RequestMethod,
@@ -131,23 +144,18 @@ export class SailsClient {
     options: ISailsRequestOpts = {}
   ): Observable<SailsResponse<any>> {
     return sendRequest<any>(
-      {
-        data,
-        headers: {
-          ...this[_defaultHeaders],
-          ...(options.headers || {})
-        },
+      clean({
+        data: clean(data),
+        headers: clean({...this[_defaultHeaders], ...(options.headers || {})}),
         method,
-        params: options.params || options.search || {},
+        params: clean(options.params || options.search || {}),
         url
-      },
+      }),
       this.io,
       this[_errorsSbj]
     );
   }
 }
-
-SailsClient.prototype[Symbol.toStringTag] = 'NgxSailsClient';
 
 function sendRequest<T>(
   request: ISailsRequest,
@@ -157,39 +165,49 @@ function sendRequest<T>(
   const {method} = request;
   request.headers = lowerCaseHeaders(request.headers);
 
-  return new Observable<IRawSailsResponse>(subscriber => {
+  return new Observable<SailsResponse<any>>(subscriber => {
+    let unsubscribed = false;
+
     io.emit(method, request, (rawResponse: IRawSailsResponse) => {
-      if (rawResponse.statusCode >= 400) { //tslint:disable-line:no-magic-numbers
-        const error = new SailsError(rawResponse, request);
-        errors$.next(error);
-        subscriber.error(error);
-      } else {
-        subscriber.next(rawResponse);
-        subscriber.complete();
+      if (!unsubscribed) {
+        if (rawResponse.statusCode >= 400) { //tslint:disable-line:no-magic-numbers
+          const error = new SailsError(rawResponse, request);
+          errors$.next(error);
+          subscriber.error(error);
+        } else {
+          subscriber.next(new SailsResponse<any>(rawResponse, request));
+          subscriber.complete();
+        }
       }
     });
-  }).pipe(
-    map(rawResponse => new SailsResponse<any>(rawResponse, request))
-  );
+
+    subscriber.add(() => {
+      unsubscribed = true;
+    });
+  });
 }
 
-function lowerCaseHeaders(headers: AnyObject) {
-  let lowercased: string;
+function lowerCaseHeaders(headers?: AnyObject<any>): AnyObject<any> {
+  if (headers) {
+    let lowercased: string;
 
-  for (const header of Object.keys(headers)) {
-    lowercased = header.toLowerCase();
-    if (lowercased !== header) {
-      headers[lowercased] = headers[header];
-      delete headers[header];
+    for (const header of Object.keys(headers)) {
+      lowercased = header.toLowerCase();
+      if (lowercased !== header) {
+        headers[lowercased] = headers[header];
+        delete headers[header];
+      }
     }
   }
 
   return headers;
 }
 
-function clean<T extends AnyObject>(obj: T): T {
-  for (const key of Object.keys(obj)) {
-    !obj[key] && delete obj[key];
+function clean<T extends AnyObject<any>>(obj?: T): T {
+  if (obj) {
+    for (const key of Object.keys(obj)) {
+      !obj[key] && delete obj[key];
+    }
   }
 
   return obj;
