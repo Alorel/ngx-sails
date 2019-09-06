@@ -1,0 +1,14 @@
+{
+  "name": "@aloreljs/ngx-sails",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "socket.io-client": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^8.2.4",
+    "@angular/core": "^8.2.4"
+  }
+}

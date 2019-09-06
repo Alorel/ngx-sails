@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@aloreljs/ngx-sails": [
+        "dist/ngx-sails"
+      ],
+      "@aloreljs/ngx-sails/*": [
+        "dist/ngx-sails/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
