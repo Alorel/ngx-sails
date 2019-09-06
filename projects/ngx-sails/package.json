@@ -5,10 +5,10 @@
   },
   "version": "0.0.1",
   "dependencies": {
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "~8.2.5",
-    "@angular/core": "~8.2.5"
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0"
   }
 }
