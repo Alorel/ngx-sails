@@ -7,10 +7,10 @@ clean-pkg-json:
 
 copy-files:
   from:
-  - package.json
-  - LICENSE
-  - CHANGELOG.md
-  - README.md
+    - package.json
+    - LICENSE
+    - CHANGELOG.md
+    - README.md
   to: *distDirs
 
 build:
