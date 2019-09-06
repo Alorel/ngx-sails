@@ -1,0 +1,51 @@
+{
+  "name": "@aloreljs/ngx-sails",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Angular bindings for communicating with the sails backend",
+  "keywords": [
+    "angular",
+    "sails",
+    "ngx",
+    "bindings"
+  ],
+  "scripts": {
+    "pretest": "rimraf coverage",
+    "test": "nyc mocha --opts ./mocha.opts",
+    "test:watch": "npm --scripts-prepend-node-path=auto run test -- --watch",
+    "tslint": "alo tslint -p tsconfig.test.json",
+    "tslint:fix": "npm --scripts-prepend-node-path=auto run tslint -- --fix",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "npm --scripts-prepend-node-path=auto run typecheck -- --watch",
+    "build": "alo build"
+  },
+  "repository": "git@github.com:Alorel/ngx-sails.git",
+  "devDependencies": {
+    "@alorel-personal/build-tools": "4.7.6",
+    "@alorel-personal/conventional-changelog-alorel": "2.1.1",
+    "@alorel-personal/semantic-release": "1.4.0",
+    "@alorel-personal/tslint-rules": "5.0.5",
+    "@semantic-release/changelog": "~3.0.4",
+    "@semantic-release/exec": "~3.3.6",
+    "@semantic-release/git": "~7.0.16",
+    "@types/chai": "~4.2.1",
+    "@types/mocha": "~5.2.7",
+    "@types/node": "~12.7.4",
+    "chai": "~4.2.0",
+    "coveralls": "~3.0.6",
+    "mocha": "~6.2.0",
+    "nyc": "~14.1.1",
+    "rimraf": "~3.0.0",
+    "semantic-release": "~15.13.24",
+    "source-map-support": "~0.5.13",
+    "ts-node": "~8.3.0",
+    "tslib": "~1.10.0",
+    "typescript": "~3.6.2"
+  },
+  "peerDependencies": {
+    "tslib": "^1.6.0"
+  },
+  "license": "MIT"
+}
