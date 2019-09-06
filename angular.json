@@ -99,6 +99,41 @@
           }
         }
       }
+    },
+    "ngx-sails": {
+      "projectType": "library",
+      "root": "projects/ngx-sails",
+      "sourceRoot": "projects/ngx-sails/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-sails/tsconfig.lib.json",
+            "project": "projects/ngx-sails/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-sails/src/test.ts",
+            "tsConfig": "projects/ngx-sails/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-sails/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-sails/tsconfig.lib.json",
+              "projects/ngx-sails/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-sails-demo"

@@ -6,6 +6,7 @@ env:
 before_install:
   - npm i -g yarn greenkeeper-lockfile@^2.0.0
   - greenkeeper-lockfile-update
+  - node build/sync-dep-versions.js
 install: yarn install --check-files
 script:
   - yarn run tslint
