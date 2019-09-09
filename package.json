@@ -7,7 +7,7 @@
     "build:demo:aot": "ng build ngx-sails-demo --aot",
     "build:lib": "ng build ngx-sails",
     "test": "ng test ngx-sails --progress --code-coverage",
-    "tslint": "alo tslint",
+    "tslint": "alo tslint -p tsconfig.json",
     "tslint:fix": "npm --scripts-prepend-node-path=auto run tslint -- --fix"
   },
   "private": true,

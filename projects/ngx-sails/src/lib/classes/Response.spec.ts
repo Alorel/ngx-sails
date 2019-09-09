@@ -1,7 +1,7 @@
 import {AnyObject} from '../util/AnyObject';
 import {Response} from './Response';
 
-//tslint:disable:no-magic-numbers
+//tslint:disable:no-magic-numbers no-floating-promises
 
 describe('Response abstract', () => {
   class Rsp extends Response {

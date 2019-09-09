@@ -1,5 +1,7 @@
 import {SailsError} from './SailsError';
 
+//tslint:disable:no-floating-promises
+
 describe('SailsError', () => {
   let inst: SailsError;
   const expectations: [keyof PropertyDescriptor, boolean][] = [
@@ -18,7 +20,7 @@ describe('SailsError', () => {
 
   for (const [prop, exp] of expectations) {
     it(`Error ${exp ? 'should' : 'shouldn\t'} be ${prop}`, () => {
-      expect(Object.getOwnPropertyDescriptor(inst, 'config')![prop]).toBe(<any>exp);
+      expect(Object.getOwnPropertyDescriptor(inst, 'config')[prop]).toBe(<any>exp);
     });
   }
 });

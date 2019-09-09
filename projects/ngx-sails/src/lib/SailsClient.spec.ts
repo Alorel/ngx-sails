@@ -11,7 +11,8 @@ import {SailsClient} from './SailsClient';
 import {IO_INSTANCE} from './tokens/IO_INSTANCE';
 import {NGX_SAILS_CONFIG} from './tokens/NGX_SAILS_CONFIG';
 
-//tslint:disable:no-magic-numbers no-duplicate-string no-big-function no-identical-functions max-file-line-count
+//tslint:disable-next-line:max-line-length
+//tslint:disable:no-magic-numbers no-duplicate-string no-big-function no-identical-functions max-file-line-count no-floating-promises
 describe('SailsClientService', () => {
   let service: SailsClient;
   let client: SocketIOClient.Socket;
@@ -386,13 +387,13 @@ describe('SailsClientService', () => {
 
   for (const p of ['io', 'requestErrors', 'configuration']) {
     it(`SailsClient.${p} should be non-configurable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p)!.configurable).toBe(false);
+      expect(Object.getOwnPropertyDescriptor(service, p).configurable).toBe(false);
     });
     it(`SailsClient.${p} should be enumerable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p)!.enumerable).toBe(true);
+      expect(Object.getOwnPropertyDescriptor(service, p).enumerable).toBe(true);
     });
     it(`SailsClient.${p} should be non-writable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p)!.writable).toBe(false);
+      expect(Object.getOwnPropertyDescriptor(service, p).writable).toBe(false);
     });
   }
 
