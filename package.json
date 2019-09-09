@@ -11,6 +11,29 @@
     "tslint:fix": "npm --scripts-prepend-node-path=auto run tslint -- --fix"
   },
   "private": true,
+  "author": {
+    "name": "Arturas Molcanovas",
+    "url": "https://github.com/Alorel",
+    "email": "a.molcanovas@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alorel/ngx-sails.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Alorel/ngx-sails/issues"
+  },
+  "description": "Sails socket.io bindings for Angular",
+  "keywords": [
+    "angular",
+    "ngx",
+    "sails",
+    "socket",
+    "socket.io",
+    "binding",
+    "bindings"
+  ],
+  "license": "MIT",
   "dependencies": {
     "@angular/animations": "^8.2.5",
     "@angular/common": "^8.2.5",

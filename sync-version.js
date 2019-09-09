@@ -15,7 +15,7 @@ for (const p of DEST_PATHS) {
   const json = JSON.parse(fs.readFileSync(p, 'utf8'));
   if (json.version !== ROOT_VERSION) {
     json.version = ROOT_VERSION;
-    const contents = JSON.stringify(json).trim() + '\n';
+    const contents = JSON.stringify(json, null, 2).trim() + '\n';
     fs.writeFileSync(p, contents);
   }
 }
