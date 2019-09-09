@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {SailsClient} from '../../projects/ngx-sails/src/lib/SailsClient';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngx-sails';
+
+  public constructor(public readonly sails: SailsClient) {
+  }
 }

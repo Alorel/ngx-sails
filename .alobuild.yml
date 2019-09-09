@@ -1,5 +1,5 @@
 global:
-  dist-dirs: &distDirs dist
+  dist-dirs: &distDirs dist/ngx-sails
   tsconfig: tsconfig.json
 
 clean-pkg-json:
@@ -7,7 +7,6 @@ clean-pkg-json:
 
 copy-files:
   from:
-    - package.json
     - LICENSE
     - CHANGELOG.md
     - README.md

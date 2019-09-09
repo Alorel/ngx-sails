@@ -15,7 +15,7 @@ module.exports = function (config) {
 
   if (process.env.CI) {
     reports.push('lcovonly');
-    plugins.push(require('karma-firefox-launcher'), require('karma-safari-launcher'));
+    plugins.push(require('karma-firefox-launcher'));
     browsers.push('ChromeHeadlessTravis', 'FirefoxHeadless');
     customLaunchers.ChromeHeadlessTravis = {
       base: 'ChromeHeadless',
