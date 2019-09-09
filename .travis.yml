@@ -8,7 +8,6 @@ script:
   - yarn run tslint
   - yarn test
   - yarn run build:demo:aot
-  - yarn run build:lib
   - if [[ $GH_TOKEN ]]; then semantic-release --dry-run; fi;
 before_cache: rm -rf ./node_modules/.cache
 after_script: if [[ $GH_TOKEN ]]; then greenkeeper-lockfile-upload; fi;
