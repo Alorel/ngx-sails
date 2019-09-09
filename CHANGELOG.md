@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Alorel/ngx-sails/compare/1.0.0...1.0.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* Fix wrong travis bradge in README ([0bbfd3d](https://github.com/Alorel/ngx-sails/commit/0bbfd3d))
+
 # 1.0.0 (2019-09-09)
 
 

@@ -1,7 +1,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Alorel/ngx-sails.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.com/Alorel/ngx-sails.svg?branch=1.0.0)](https://travis-ci.com/Alorel/ngx-sails)
-[![Coverage Status](https://coveralls.io/repos/github/Alorel/ngx-sails/badge.svg?branch=1.0.0)](https://coveralls.io/github/Alorel/ngx-sails?branch=1.0.0)
+[![Build Status](https://travis-ci.com/Alorel/ngx-sails.svg?branch=1.0.1)](https://travis-ci.com/Alorel/ngx-sails)
+[![Coverage Status](https://coveralls.io/repos/github/Alorel/ngx-sails/badge.svg?branch=1.0.1)](https://coveralls.io/github/Alorel/ngx-sails?branch=1.0.1)
 
 # Angular bindings for the sails socket client
 
