@@ -12,9 +12,3 @@ copy-files:
     - README.md
   to: *distDirs
 
-build:
-  entry: src/index.ts
-  license-banner: true
-  out: *distDirs
-  umd-name: MyLib
-  externals: tslib
