@@ -28,10 +28,12 @@ prepare:
       - package.json
       - projects/ngx-sails/package.json
       - yarn.lock
+  - path: *exec
+    cmd: ./mkrelease.sh
 
 publish:
-  - path: *npm
-    pkgRoot: './dist/ngx-sails'
+  - path: *exec
+    cmd: npm publish ./dist.tgz
   - *gh
 
 generateNotes:
