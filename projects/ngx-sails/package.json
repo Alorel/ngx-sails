@@ -14,6 +14,9 @@
     "bindings"
   ],
   "version": "0.0.1",
+  "dependencies": {
+    "@types/socket.io-client": "^1.4.32"
+  },
   "peerDependencies": {
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
