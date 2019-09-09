@@ -5,6 +5,8 @@
 
 # Angular bindings for the sails socket client
 
+Used the abandoned [ngx-sails](https://github.com/brandom/ngx-sails) as a base.
+
 ## Installation
 
 Angular 8:
@@ -13,7 +15,7 @@ Angular 8:
 npm install @alorleljs/ngx-sails@^1.0.0 socket.io-client@^2.0.0
 ```
 
-# Configuration
+## Configuration
 
 The following injection tokens can be included in your app module to configure the client:
 
@@ -57,7 +59,7 @@ const config: NgxSailsConfig = {
 export class AppModule {}
 ```
 
-# Usage
+## Usage
 
 ```typescript
 import {SailsClient} from '@aloreljs/ngx-sails';
