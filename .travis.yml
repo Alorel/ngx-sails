@@ -6,8 +6,9 @@ before_install:
 install: yarn install --check-files
 script:
   - yarn run tslint
-  - yarn run typecheck
-  - yarn test --forbid-only --forbid-pending
+  - yarn test
+  - yarn run build:demo:aot
+  - yarn run build:lib
 after_script: if [[ $GH_TOKEN ]]; then greenkeeper-lockfile-upload; fi;
 after_success: cat ./coverage/lcov.info | coveralls
 cache:
@@ -27,7 +28,7 @@ jobs:
       node_js: stable
       before_install: npm i -g yarn
       before_script:
-        - yarn run build
+        - yarn run build:lib
         - alo copy-files
       script: semantic-release
       after_success: []

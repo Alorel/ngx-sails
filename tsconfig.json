@@ -1,33 +1,39 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "module": "commonjs",
-    "strictBindCallApply": true,
-    "target": "es5",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "newLine": "lf",
-    "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "importHelpers": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "strict": true,
-    "stripInternal": true,
-    "declaration": false,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": false,
-    "removeComments": false,
-    "moduleResolution": "node",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "outDir": "dist"
+    "declaration": false,
+    "downlevelIteration": true,
+    "stripInternal": true,
+    "strictBindCallApply": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@aloreljs/ngx-sails": [
+        "dist/ngx-sails"
+      ],
+      "@aloreljs/ngx-sails/*": [
+        "dist/ngx-sails/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   },
   "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
+    "projects"
   ]
 }
