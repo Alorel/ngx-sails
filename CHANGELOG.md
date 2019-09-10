@@ -10,7 +10,7 @@
 
 ### Bug Fixes
 
-* Fix wrong travis bradge in README ([0bbfd3d](https://github.com/Alorel/ngx-sails/commit/0bbfd3d))
+* Fix wrong travis badge in README ([0bbfd3d](https://github.com/Alorel/ngx-sails/commit/0bbfd3d))
 
 # 1.0.0 (2019-09-09)
 
