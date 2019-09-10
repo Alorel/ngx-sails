@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/Alorel/ngx-sails/compare/1.0.2...1.1.0) (2019-09-10)
+
+
+### Features
+
+* SailsClient can now emit values ([d78775c](https://github.com/Alorel/ngx-sails/commit/d78775c))
+
+
+### Maintenance
+
+* Fix changelog typo ([592002a](https://github.com/Alorel/ngx-sails/commit/592002a))
+
 ## [1.0.2](https://github.com/Alorel/ngx-sails/compare/1.0.1...1.0.2) (2019-09-09)
 
 
