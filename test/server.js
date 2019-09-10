@@ -18,14 +18,20 @@ io.on('connect', socket => {
     'options'
   ];
   sock = socket;
+  sock.on('emit', data => {
+    socket.emit('emission-response', data);
+  });
+  sock.on('ping', (pong, cb) => {
+    cb({pong})
+  });
   for (const method of methods) {
     socket.on(method, onHandler);
   }
 });
 
 function getResponse(request) {
-  const {method, data, params} = request;
-  switch (request.url) {
+  const {method, data, params, url} = request;
+  switch (url) {
     case 'success':
       return {statusCode: 200, body: {method, data: data || params}};
     case 'error':

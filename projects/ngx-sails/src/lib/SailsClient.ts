@@ -94,6 +94,21 @@ export class SailsClient implements OnDestroy {
     return this[_sendRequest](url, RequestMethod.DELETE, undefined, opts);
   }
 
+  /** Emit an event */
+  public emit(event: string, ...args: any[]): void {
+    this.io.emit(event, ...args);
+  }
+
+  /** Emit an event and wait for a response. */
+  public emitAndWait<T = any>(event: string, ...args: any[]): Observable<T> {
+    return new Observable<T>(subscriber => {
+      this.io.emit(event, ...args, (response: any) => {
+        subscriber.next(response);
+        subscriber.complete();
+      });
+    });
+  }
+
   public get<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
     return this[_sendRequest](url, RequestMethod.GET, undefined, opts);
   }

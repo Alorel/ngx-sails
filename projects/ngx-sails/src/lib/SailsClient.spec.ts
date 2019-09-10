@@ -53,6 +53,37 @@ describe('SailsClientService', () => {
     expect(service instanceof SailsClient).toBe(true);
   });
 
+  it('Should emit', done => {
+    const data = Math.random();
+
+    client.once('emission-response', r => {
+      try {
+        expect(r).toBe(data);
+        done();
+      } catch (e) {
+        done.fail(e.message);
+      }
+    });
+
+    service.emit('emit', data);
+  });
+
+  it('Should emit and wait', done => {
+    const data = Math.random();
+    service.emitAndWait<{pong: number}>('ping', data)
+      .subscribe(
+        r => {
+          try {
+            expect(r).toEqual({pong: data});
+            done();
+          } catch (e) {
+            done.fail(e.message);
+          }
+        },
+        done.fail.bind(done)
+      );
+  });
+
   describe('Base success', () => {
     beforeEach(done => {
       service.get('success').subscribe(

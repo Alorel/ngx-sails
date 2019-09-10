@@ -68,13 +68,21 @@ import {SailsClient} from '@aloreljs/ngx-sails';
 export class MyComponent {
   public constructor(private readonly sails: SailsClient) {}
 
-  public listenForEvent() {
-    this.sails.on('eventName').subscribe();
+  public listenForEvent(): void {
+    this.sails.on('eventName').subscribe(response => {});
   }
  
-  public makeRequest() {
+  public makeRequest(): void {
     this.sails.get('url').subscribe();
-    this.sails.post('url', {foo: 'bar'}).subscribe();
+    this.sails.post('url', {foo: 'bar'}).subscribe(response => {});
+  }
+
+  public emitEventWithoutAResponse(): void {
+    this.sails.emit('eventName', 'arg1', 'arg2');
+  }
+
+  public emitEventWithAResponse(): void {
+    this.sails.emitAndWait('eventName', 'arg1', 'arg2').subscribe(response => {})
   }
 }
 ```
