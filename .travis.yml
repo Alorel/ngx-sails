@@ -1,7 +1,7 @@
 language: node_js
 node_js: stable
 before_install:
-  - npm i -g yarn greenkeeper-lockfile@^2.0.0
+  - npm i -g yarn greenkeeper-lockfile
   - greenkeeper-lockfile-update
 install: yarn install --check-files
 script:
