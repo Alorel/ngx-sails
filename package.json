@@ -83,7 +83,7 @@
     "ng-packagr": "^5.4.0",
     "protractor": "~5.4.0",
     "semantic-release": "~15.13.24",
-    "ts-node": "~8.3.0",
+    "ts-node": "~8.4.0",
     "tsickle": "^0.37.0",
     "typescript": "~3.5.3"
   }
