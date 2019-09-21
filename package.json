@@ -69,7 +69,7 @@
     "@types/node": "~12.7.4",
     "@types/socket.io-client": "^1.4.32",
     "coveralls": "~3.0.6",
-    "jasmine-core": "~3.4.0",
+    "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
     "karma-chrome-launcher": "~3.1.0",
