@@ -12,7 +12,7 @@ Used the abandoned [ngx-sails](https://github.com/brandom/ngx-sails) as a base.
 Angular 8:
 
 ```
-npm install @alorleljs/ngx-sails@^1.0.0 socket.io-client@^2.0.0
+npm install @aloreljs/ngx-sails@^1.0.0 socket.io-client@^2.0.0
 ```
 
 ## Configuration
