@@ -1,3 +1,15 @@
+## [1.1.1](https://github.com/Alorel/ngx-sails/compare/1.1.0...1.1.1) (2019-09-25)
+
+
+### Bug Fixes
+
+* **readme:** Fixed typo in package name ([6578ce7](https://github.com/Alorel/ngx-sails/commit/6578ce7)), closes [#11](https://github.com/Alorel/ngx-sails/issues/11)
+
+
+### Maintenance
+
+* Remove rebase github action ([8b6e2c2](https://github.com/Alorel/ngx-sails/commit/8b6e2c2))
+
 # [1.1.0](https://github.com/Alorel/ngx-sails/compare/1.0.2...1.1.0) (2019-09-10)
 
 
