@@ -62,7 +62,7 @@
     "@semantic-release/exec": "~3.3.6",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/github": "~5.4.3",
-    "@semantic-release/npm": "~5.1.15",
+    "@semantic-release/npm": "~5.2.0",
     "@types/jasmine": "~3.4.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/lodash-es": "^4.17.3",
