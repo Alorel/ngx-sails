@@ -19,7 +19,7 @@ describe('SailsResponse', () => {
   });
 
   for (const [prop, exp] of expectations) {
-    it(`Error ${exp ? 'should' : 'shouldn\t'} be ${prop}`, () => {
+    it(`Error ${exp ? 'should' : 'shouldn\'t'} be ${prop}`, () => {
       expect(Object.getOwnPropertyDescriptor(inst, 'config')[prop]).toBe(<any>exp);
     });
   }
