@@ -1,3 +1,16 @@
+## [1.1.2](https://github.com/Alorel/ngx-sails/compare/1.1.1...1.1.2) (2019-10-25)
+
+
+### Bug Fixes
+
+* Check for undefined instead of falsy when cleaning request body ([](https://github.com/Alorel/ngx-sails/commit/d7acf51))
+
+
+### Tests
+
+* Fix test name typos ([](https://github.com/Alorel/ngx-sails/commit/e06fcf7))
+* Use mocha reporter for tests ([](https://github.com/Alorel/ngx-sails/commit/1407eef))
+
 ## [1.1.1](https://github.com/Alorel/ngx-sails/compare/1.1.0...1.1.1) (2019-09-25)
 
 
