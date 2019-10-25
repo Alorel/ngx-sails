@@ -221,7 +221,7 @@ function lowerCaseHeaders(headers?: AnyObject<any>): AnyObject<any> {
 function clean<T extends AnyObject<any>>(obj?: T): T {
   if (obj) {
     for (const key of Object.keys(obj)) {
-      !obj[key] && delete obj[key];
+      obj[key] === undefined && delete obj[key];
     }
   }
 
