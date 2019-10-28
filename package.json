@@ -49,7 +49,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@alorel-personal/build-tools": "4.7.12",
+    "@alorel-personal/build-tools": "4.7.13",
     "@alorel-personal/conventional-changelog-alorel": "2.1.1",
     "@alorel-personal/semantic-release": "1.4.0",
     "@alorel-personal/tslint-rules": "5.0.5",
