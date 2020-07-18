@@ -78,7 +78,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "karma-mocha-reporter": "~2.2.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lodash-es": "^4.17.15",
     "mock-socket.io": "~1.1.0",
     "ng-packagr": "^5.4.0",
