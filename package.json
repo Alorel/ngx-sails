@@ -1,6 +1,6 @@
 {
   "name": "ngx-sails",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "scripts": {
     "start": "ng serve",
     "build": "ng build ngx-sails",

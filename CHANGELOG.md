@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/Alorel/ngx-sails/compare/1.1.2...2.0.0) (2022-01-24)
+
+
+### Maintenance
+
+* Update library to support ng13 ([4506e19](https://github.com/Alorel/ngx-sails/commit/4506e19d5a167b7035c6dde13eb63727f1ae5e30))
+
+
+### BREAKING CHANGES
+
+* Earlier versions of Angular no longer supported
+
 ## [1.1.2](https://github.com/Alorel/ngx-sails/compare/1.1.1...1.1.2) (2019-10-25)
 
 
