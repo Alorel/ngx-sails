@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/Alorel/ngx-sails/compare/2.0.0...2.0.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* Add socket.io client typings as dependency ([ee933a6](https://github.com/Alorel/ngx-sails/commit/ee933a67ca4f4a3c863d195638201e88add6746a))
+
 # [2.0.0](https://github.com/Alorel/ngx-sails/compare/1.1.2...2.0.0) (2022-01-24)
 
 
