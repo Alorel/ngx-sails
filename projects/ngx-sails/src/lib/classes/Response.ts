@@ -1,8 +1,7 @@
-import {IRawSailsResponse} from '../interfaces/IRawSailsResponse';
-import {ISailsRequest} from '../interfaces/ISailsRequest';
-import {ISailsResponse} from '../interfaces/ISailsResponse';
-import {AnyObject} from '../util/AnyObject';
-import {defineEnumerable} from '../util/define';
+import type {IRawSailsResponse} from '../interfaces/IRawSailsResponse';
+import type {ISailsRequest} from '../interfaces/ISailsRequest';
+import type {ISailsResponse} from '../interfaces/ISailsResponse';
+import type {AnyObject} from '../util/AnyObject';
 
 /** Abstract response class */
 export abstract class Response implements Omit<ISailsResponse, 'data'> {
@@ -13,16 +12,11 @@ export abstract class Response implements Omit<ISailsResponse, 'data'> {
   public readonly status: number;
 
   protected constructor(response: IRawSailsResponse, request: ISailsRequest) {
-    if (typeof <any>response === 'string') {
-      try {
-        response = JSON.parse(<any>response);
-      } catch {
-        throw new Error(`Malformed response ${response}. Could not be parsed to JSON`);
-      }
-    }
-    defineEnumerable(this, 'config', request);
-    defineEnumerable(this, 'headers', response.headers || {});
-    //tslint:disable-next-line:no-magic-numbers
-    defineEnumerable(this, 'status', response.statusCode || 200);
+    const rspParsed: IRawSailsResponse = typeof response === 'string'
+      ? JSON.parse(response)
+      : response;
+    this.config = request;
+    this.headers = rspParsed.headers || {};
+    this.status = rspParsed.statusCode ?? 200;
   }
 }

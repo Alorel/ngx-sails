@@ -1,5 +1,5 @@
-import {AnyObject} from '../util/AnyObject';
-import {ISailsRequest} from './ISailsRequest';
+import type {AnyObject} from '../util/AnyObject';
+import type {ISailsRequest} from './ISailsRequest';
 
 /** A processed Sails response */
 export interface ISailsResponse<T = any> {

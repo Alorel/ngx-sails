@@ -1,7 +1,4 @@
-import {AnyObject} from '../util/AnyObject';
 import {Response} from './Response';
-
-//tslint:disable:no-magic-numbers no-floating-promises
 
 describe('Response abstract', () => {
   class Rsp extends Response {
@@ -12,32 +9,14 @@ describe('Response abstract', () => {
   }
 
   let inst: Rsp;
-  const props = ['config', 'headers', 'status'];
-  const descs: AnyObject<PropertyDescriptor> = {};
-  const expectations: [keyof PropertyDescriptor, boolean][] = [
-    ['configurable', false],
-    ['enumerable', true],
-    ['writable', false]
-  ];
 
   beforeAll(() => {
     inst = new Rsp({headers: {foo: 'bar'}, statusCode: 250}, {rq: 1});
-    for (const p of props) {
-      descs[p] = Object.getOwnPropertyDescriptor(inst, p);
-    }
   });
 
   it('Status should default to 200', () => {
     expect(new Rsp({}, {}).status).toBe(200);
   });
-
-  for (const instProp of props) {
-    for (const [prop, exp] of expectations) {
-      it(`${instProp} ${exp ? 'should' : 'shouldn\t'} be ${prop}`, () => {
-        expect(descs[instProp][prop]).toBe(exp);
-      });
-    }
-  }
 
   it('Status should be 250', () => {
     expect(inst.status).toBe(250);
@@ -54,7 +33,7 @@ describe('Response abstract', () => {
   it('Should throw on invalid JSON', () => {
     expect(() => {
       new Rsp('foo}', 1);
-    }).toThrowError(/Could not be parsed to JSON$/);
+    }).toThrowError(/Unexpected token .+ in JSON at position/);
   });
 
   it('Should parse string JSON', () => {

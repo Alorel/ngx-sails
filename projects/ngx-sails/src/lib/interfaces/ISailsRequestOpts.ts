@@ -1,4 +1,4 @@
-import {AnyObject} from '../util/AnyObject';
+import type {AnyObject} from '../util/AnyObject';
 
 /** Request options for a Sails request */
 export interface ISailsRequestOpts {

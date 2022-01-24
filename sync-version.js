@@ -9,13 +9,21 @@ try {
 } catch (e) {
 }
 
-const fs = require('fs');
+const {promises: fs} = require('fs');
 
-for (const p of DEST_PATHS) {
-  const json = JSON.parse(fs.readFileSync(p, 'utf8'));
-  if (json.version !== ROOT_VERSION) {
-    json.version = ROOT_VERSION;
-    const contents = JSON.stringify(json, null, 2).trim() + '\n';
-    fs.writeFileSync(p, contents);
-  }
-}
+Promise
+  .all(
+    DEST_PATHS
+      .map(async p => {
+        const json = JSON.parse(await fs.readFile(p, 'utf8'));
+        if (json.version !== ROOT_VERSION) {
+          json.version = ROOT_VERSION;
+          const contents = JSON.stringify(json, null, 2).trim() + '\n';
+          await fs.writeFile(p, contents);
+        }
+      })
+  )
+  .catch(e => {
+    console.error(e);
+    process.exit(1);
+  });

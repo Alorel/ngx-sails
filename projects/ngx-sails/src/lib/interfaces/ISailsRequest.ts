@@ -1,5 +1,5 @@
-import {RequestMethod} from '../enums/RequestMethod';
-import {AnyObject} from '../util/AnyObject';
+import type {RequestMethod} from '../enums/RequestMethod';
+import type {AnyObject} from '../util/AnyObject';
 
 /** A Sails request */
 export interface ISailsRequest {

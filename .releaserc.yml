@@ -8,18 +8,11 @@ verifyConditions:
 
 prepare:
   - '@semantic-release/changelog'
-  - '@alorel-personal/semantic-release'
   - *npm
   - path: &exec '@semantic-release/exec'
     cmd: node sync-version.js
   - path: *exec
-    cmd: alo copy-files
-  - path: *exec
-    cmd: alo clean-dist
-  - path: *exec
-    cmd: alo clean-pkg-json
-  - path: *exec
-    cmd: node sync-version.js
+    cmd: 'npm run build'
   - path: '@semantic-release/git'
     message: 'chore(release): ${nextRelease.version}'
     assets:
@@ -27,13 +20,11 @@ prepare:
       - README.md
       - package.json
       - projects/ngx-sails/package.json
-      - yarn.lock
-  - path: *exec
-    cmd: ./mkrelease.sh
+      - package-lock.json
 
 publish:
   - path: *exec
-    cmd: npm publish ./dist.tgz
+    cmd: bash -c "cd dist/ngx-sails && npm publish"
   - *gh
 
 generateNotes:
