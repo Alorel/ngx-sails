@@ -3,5 +3,8 @@
   "dest": "../../dist/ngx-sails",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "@types/socket.io-client"
+  ]
 }
