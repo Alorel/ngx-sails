@@ -1,39 +1,43 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "paths": {
+      "ngx-sails": [
+        "dist/ngx-sails/ngx-sails",
+        "dist/ngx-sails"
+      ],
+      "*": [
+        "./typings/*"
+      ]
+    },
+    "noImplicitOverride": true,
+    "allowSyntheticDefaultImports": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
-    "stripInternal": true,
-    "strictBindCallApply": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "useUnknownInCatchVariables": false,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "target": "es2017",
+    "module": "es2020",
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
-    ],
-    "paths": {
-      "@aloreljs/ngx-sails": [
-        "dist/ngx-sails"
-      ],
-      "@aloreljs/ngx-sails/*": [
-        "dist/ngx-sails/*"
-      ]
-    }
+    ]
   },
   "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  },
-  "include": [
-    "projects"
-  ]
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

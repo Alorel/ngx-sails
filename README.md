@@ -1,18 +1,13 @@
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/Alorel/ngx-sails.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.com/Alorel/ngx-sails.svg?branch=1.1.2)](https://travis-ci.com/Alorel/ngx-sails)
-[![Coverage Status](https://coveralls.io/repos/github/Alorel/ngx-sails/badge.svg?branch=1.1.2)](https://coveralls.io/github/Alorel/ngx-sails?branch=1.1.2)
-
 # Angular bindings for the sails socket client
 
 Used the abandoned [ngx-sails](https://github.com/brandom/ngx-sails) as a base.
 
 ## Installation
 
-Angular 8:
+Angular 13:
 
 ```
-npm install @aloreljs/ngx-sails@^1.0.0 socket.io-client@^2.0.0
+npm install @aloreljs/ngx-sails@^2.0.0 socket.io-client@^2.0.0
 ```
 
 ## Configuration

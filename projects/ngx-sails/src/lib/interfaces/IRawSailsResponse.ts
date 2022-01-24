@@ -1,5 +1,5 @@
 /** A raw response from Sails */
-import {AnyObject} from '../util/AnyObject';
+import type {AnyObject} from '../util/AnyObject';
 
 /** A raw sails response */
 export interface IRawSailsResponse {

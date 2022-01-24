@@ -1,5 +1,3 @@
-//tslint:disable:completed-docs
-
 /** HTTP request method */
 export const enum RequestMethod {
   GET = 'get',

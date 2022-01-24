@@ -1,0 +1,73 @@
+name: Core
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    name: Test ${{ matrix.os }}/Node ${{ matrix.node }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        node:
+          - 16
+          - 14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test
+        uses: ./.github/actions/test
+        with:
+          node-version: ${{ matrix.node }}
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload coverage
+        if: ${{ runner.os != 'windows-latest' }}
+        continue-on-error: true
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: node-${{ inputs.node-version }}-on-${{ runner.os }}-${{ github.event_name }}
+          parallel: true
+          path-to-lcov: ./coverage/ngx-sails/lcov.info
+  posttest:
+    runs-on: ubuntu-latest
+    needs: test
+    continue-on-error: true
+    steps:
+      - name: Finalise coverage report
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    needs:
+      - test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1000
+      - name: Init NPM
+        uses: ./.github/actions/init-npm
+        with:
+          node-version: 16
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v2
+        name: Reconfig Node
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://registry.npmjs.org
+      - name: Build
+        run: npm run build
+      - name: Release
+        run: npm run release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

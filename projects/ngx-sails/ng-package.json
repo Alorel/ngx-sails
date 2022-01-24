@@ -1,13 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ngx-sails",
-  "whitelistedNonPeerDependencies": [
-    "@types/socket.io-client"
-  ],
   "lib": {
-    "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "socket.io-client": "io"
-    }
+    "entryFile": "src/public-api.ts"
   }
 }

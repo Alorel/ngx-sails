@@ -4,21 +4,14 @@ import * as _io from 'socket.io-client';
 import {SailsError} from './classes/SailsError';
 import {SailsResponse} from './classes/SailsResponse';
 import {RequestMethod} from './enums/RequestMethod';
-import {IRawSailsResponse} from './interfaces/IRawSailsResponse';
-import {ISailsRequest} from './interfaces/ISailsRequest';
-import {ISailsRequestOpts} from './interfaces/ISailsRequestOpts';
-import {ISailsResponse} from './interfaces/ISailsResponse';
-import {NgxSailsConfig} from './interfaces/NgxSailsConfig';
+import type {IRawSailsResponse} from './interfaces/IRawSailsResponse';
+import type {ISailsRequest} from './interfaces/ISailsRequest';
+import type {ISailsRequestOpts} from './interfaces/ISailsRequestOpts';
+import type {ISailsResponse} from './interfaces/ISailsResponse';
+import type {NgxSailsConfig} from './interfaces/NgxSailsConfig';
 import {IO_INSTANCE} from './tokens/IO_INSTANCE';
 import {NGX_SAILS_CONFIG} from './tokens/NGX_SAILS_CONFIG';
-import {AnyObject} from './util/AnyObject';
-import {defineEnumerable, defineHidden} from './util/define';
-
-const _defaultHeaders: unique symbol = Symbol('defaultHeaders');
-const _uri: unique symbol = Symbol('uri');
-const _cfg: unique symbol = Symbol('cfg');
-const _errorsSbj: unique symbol = Symbol('errorsSbj');
-const _sendRequest: unique symbol = Symbol('sendRequest');
+import type {AnyObject} from './util/AnyObject';
 
 @Injectable({providedIn: 'root'})
 export class SailsClient implements OnDestroy {
@@ -29,69 +22,55 @@ export class SailsClient implements OnDestroy {
 
   public readonly requestErrors: Observable<SailsError>;
 
-  /** @internal */
-  private readonly [_defaultHeaders]: AnyObject<any>;
+  private readonly _cfg: SocketIOClient.ConnectOpts;
 
-  /** @internal */
-  private readonly [_uri]: string;
+  private readonly _defaultHeaders: AnyObject<any>;
 
-  /** @internal */
-  private readonly [_cfg]: SocketIOClient.ConnectOpts;
-
-  /** @internal */
-  private readonly [_errorsSbj]: Subject<SailsError>;
+  private readonly _errorsSbj: Subject<SailsError>;
 
   public constructor(
     inj: Injector,
-    @Optional() @Inject(IO_INSTANCE) io: any,
-    @Optional() @Inject(NGX_SAILS_CONFIG) cfg: NgxSailsConfig
+    @Optional() @Inject(IO_INSTANCE) io: any | null,
+    @Optional() @Inject(NGX_SAILS_CONFIG) cfg: NgxSailsConfig | null,
   ) {
-    if (!cfg) {
-      cfg = {};
-    }
     const SAILS_IO_SDK_STRING = '__sails_io_sdk';
-    const SAILS_IO_SDK = {
+    const SAILS_IO_SDK: AnyObject = {
       language: 'javascript',
       platform: 'browser',
       version: '1.1.12'
     };
 
-    const query = Object.keys(SAILS_IO_SDK).reduce(
-      (acc: any, key: string): any => {
-        acc[`${SAILS_IO_SDK_STRING}_${key}`] = SAILS_IO_SDK[key];
+    const query = Object.entries(SAILS_IO_SDK).reduce(
+      (acc: any, [key, value]: [string, any]): any => {
+        acc[`${SAILS_IO_SDK_STRING}_${key}`] = value;
 
         return acc;
       },
       {}
     );
 
-    if (cfg.options && cfg.options.query) {
+    if (cfg?.options?.query) {
       Object.assign(query, cfg.options.query);
     }
 
-    defineHidden(this, _cfg, {
+    this._cfg = {
       transports: ['websocket'],
-      ...(cfg.options || {}),
+      ...cfg?.options,
       query
+    };
+
+    this.io = io || (((_io as any).default || _io) as SocketIOClientStatic)(cfg?.uri as any, this._cfg);
+    this._defaultHeaders = cfg?.headers || {};
+    this._errorsSbj = new Subject();
+    this.requestErrors = this._errorsSbj.asObservable();
+    this.configuration = Object.freeze<NgxSailsConfig>({
+      headers: this._defaultHeaders,
+      options: this._cfg,
     });
-
-    if (!io) {
-      io = (<SocketIOClientStatic>((<any>_io).default || _io))(cfg.uri, this[_cfg]);
-    }
-
-    defineEnumerable(this, 'io', io);
-    defineHidden(this, _defaultHeaders, cfg.headers || {});
-    defineHidden(this, _errorsSbj, new Subject<any>());
-    defineEnumerable(this, 'requestErrors', this[_errorsSbj].asObservable());
-    defineEnumerable(this, 'configuration', Object.freeze(<NgxSailsConfig>{
-      headers: this[_defaultHeaders],
-      options: this[_cfg],
-      uri: this[_uri]
-    }));
   }
 
   public delete<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.DELETE, undefined, opts);
+    return this._sendRequest(url, RequestMethod.DELETE, undefined, opts);
   }
 
   /** Emit an event */
@@ -110,16 +89,16 @@ export class SailsClient implements OnDestroy {
   }
 
   public get<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.GET, undefined, opts);
+    return this._sendRequest(url, RequestMethod.GET, undefined, opts);
   }
 
   public head<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.HEAD, undefined, opts);
+    return this._sendRequest(url, RequestMethod.HEAD, undefined, opts);
   }
 
   /** @inheritDoc */
   public ngOnDestroy(): void {
-    this[_errorsSbj].complete();
+    this._errorsSbj.complete();
   }
 
   public on<T = any>(event: string): Observable<T> {
@@ -129,30 +108,30 @@ export class SailsClient implements OnDestroy {
       }
 
       this.io.on(event, next);
-      subscriber.add(() => {
+
+      return () => {
         this.io.off(event, next);
-      });
+      };
     });
   }
 
   public options<T = any>(url: string, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.OPTIONS, undefined, opts);
+    return this._sendRequest(url, RequestMethod.OPTIONS, undefined, opts);
   }
 
   public patch<T = any>(url: string, body?: AnyObject, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.PATCH, body, opts);
+    return this._sendRequest(url, RequestMethod.PATCH, body, opts);
   }
 
   public post<T = any>(url: string, body?: AnyObject, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.POST, body, opts);
+    return this._sendRequest(url, RequestMethod.POST, body, opts);
   }
 
   public put<T = any>(url: string, body?: AnyObject, opts?: ISailsRequestOpts): Observable<ISailsResponse<T>> {
-    return this[_sendRequest](url, RequestMethod.PUT, body, opts);
+    return this._sendRequest(url, RequestMethod.PUT, body, opts);
   }
 
-  /** @internal */
-  private [_sendRequest](
+  private _sendRequest(
     url: string,
     method: RequestMethod,
     data?: AnyObject,
@@ -161,13 +140,13 @@ export class SailsClient implements OnDestroy {
     return sendRequest<any>(
       clean({
         data: clean(data),
-        headers: clean({...this[_defaultHeaders], ...(options.headers || {})}),
+        headers: clean({...this._defaultHeaders, ...options.headers}),
         method,
         params: clean(options.params || options.search || {}),
         url
       }),
       this.io,
-      this[_errorsSbj]
+      this._errorsSbj
     );
   }
 }
@@ -185,45 +164,55 @@ function sendRequest<T>(
 
     io.emit(method, request, (rawResponse: IRawSailsResponse) => {
       if (!unsubscribed) {
-        if (rawResponse.statusCode >= 400) { //tslint:disable-line:no-magic-numbers
+        if (rawResponse.statusCode >= 400) {
           const error = new SailsError(rawResponse, request);
           errors$.next(error);
           subscriber.error(error);
         } else {
-          subscriber.next(new SailsResponse<any>(rawResponse, request));
-          subscriber.complete();
+          try {
+            subscriber.next(new SailsResponse<any>(rawResponse, request));
+            subscriber.complete();
+          } catch (e) {
+            subscriber.error(e);
+          }
         }
       }
     });
 
-    subscriber.add(() => {
+    return () => {
       unsubscribed = true;
-    });
+    };
   });
 }
 
 function lowerCaseHeaders(headers?: AnyObject<any>): AnyObject<any> {
   if (headers) {
     let lowercased: string;
+    const out = {...headers};
 
-    for (const header of Object.keys(headers)) {
+    for (const [header, value] of Object.entries(headers)) {
       lowercased = header.toLowerCase();
       if (lowercased !== header) {
-        headers[lowercased] = headers[header];
-        delete headers[header];
+        out[lowercased] = value;
+        delete out[header];
       }
     }
+
+    return out;
   }
 
-  return headers;
+  return headers!;
 }
 
 function clean<T extends AnyObject<any>>(obj?: T): T {
   if (obj) {
-    for (const key of Object.keys(obj)) {
-      obj[key] === undefined && delete obj[key];
+    const out = {...obj};
+    for (const [key, value] of Object.entries(out)) {
+      if (value === undefined) {
+        delete out[key];
+      }
     }
   }
 
-  return obj;
+  return obj!;
 }

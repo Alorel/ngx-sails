@@ -1,7 +1,7 @@
 import {inject, TestBed} from '@angular/core/testing';
 import {omit} from 'lodash-es';
-import {noop, Observable, timer} from 'rxjs';
-import {finalize, switchMapTo, take, tap} from 'rxjs/operators';
+import {delay, firstValueFrom, lastValueFrom, noop, Observable, timer} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {getSocket, MockClient, MockServer} from '../../../../test/server';
 import {SailsError} from './classes/SailsError';
 import {SailsResponse} from './classes/SailsResponse';
@@ -11,8 +11,6 @@ import {SailsClient} from './SailsClient';
 import {IO_INSTANCE} from './tokens/IO_INSTANCE';
 import {NGX_SAILS_CONFIG} from './tokens/NGX_SAILS_CONFIG';
 
-//tslint:disable-next-line:max-line-length
-//tslint:disable:no-magic-numbers no-duplicate-string no-big-function no-identical-functions max-file-line-count no-floating-promises
 describe('SailsClientService', () => {
   let service: SailsClient;
   let client: SocketIOClient.Socket;
@@ -56,7 +54,7 @@ describe('SailsClientService', () => {
   it('Should emit', done => {
     const data = Math.random();
 
-    client.once('emission-response', r => {
+    client.once('emission-response', (r: any) => {
       try {
         expect(r).toBe(data);
         done();
@@ -68,31 +66,15 @@ describe('SailsClientService', () => {
     service.emit('emit', data);
   });
 
-  it('Should emit and wait', done => {
+  it('Should emit and wait', async () => {
     const data = Math.random();
-    service.emitAndWait<{pong: number}>('ping', data)
-      .subscribe(
-        r => {
-          try {
-            expect(r).toEqual({pong: data});
-            done();
-          } catch (e) {
-            done.fail(e.message);
-          }
-        },
-        done.fail.bind(done)
-      );
+    const r: any = await lastValueFrom(service.emitAndWait<{pong: number}>('ping', data));
+    expect(r).toEqual({pong: data});
   });
 
   describe('Base success', () => {
-    beforeEach(done => {
-      service.get('success').subscribe(
-        r => {
-          rsp = r;
-          done();
-        },
-        done.fail.bind(done)
-      );
+    beforeEach(async () => {
+      rsp = await lastValueFrom(service.get('success'));
     });
 
     it('Status should be 200', () => {
@@ -107,21 +89,13 @@ describe('SailsClientService', () => {
   describe('Error', () => {
     let err: SailsError;
 
-    beforeEach(cb => {
-      rsp = <any>undefined;
-      service.get('error')
-        .pipe(
-          tap(
-            r => {
-              rsp = r;
-            },
-            (e: any) => {
-              err = e;
-            }
-          ),
-          finalize(() => cb())
-        )
-        .subscribe(noop, noop);
+    beforeEach(async () => {
+      rsp = err = undefined as any;
+      try {
+        rsp = await lastValueFrom(service.get('error'));
+      } catch (e) {
+        err = e;
+      }
     });
 
     it('Response should be undefined', () => {
@@ -137,22 +111,15 @@ describe('SailsClientService', () => {
     });
   });
 
-  for (const method of ['post', 'put', 'patch', 'delete']) {
+  for (const method of ['post', 'put', 'patch', 'delete'] as const) {
     describe(method.toUpperCase(), () => {
       const bodyValue = Math.random();
 
-      beforeEach(done => {
+      beforeEach(async () => {
         const ob: Observable<SailsResponse<any>> = method === 'delete' ?
           service.delete('success', {params: {id: bodyValue}}) :
           service[method]('success', {id: bodyValue});
-
-        ob.subscribe(
-          v => {
-            rsp = v;
-            done();
-          },
-          done.fail.bind(done)
-        );
+        rsp = await lastValueFrom(ob);
       });
 
       it('Status should be 200', () => {
@@ -169,16 +136,10 @@ describe('SailsClientService', () => {
     });
   }
 
-  for (const method of ['head', 'options']) {
+  for (const method of ['head', 'options'] as const) {
     describe(method.toUpperCase(), () => {
-      beforeEach(done => {
-        service[method]('success').subscribe(
-          v => {
-            rsp = v;
-            done();
-          },
-          done.fail.bind(done)
-        );
+      beforeEach(async () => {
+        rsp = await lastValueFrom(service[method]('success'));
       });
 
       it('Status should be 200', () => {
@@ -196,27 +157,37 @@ describe('SailsClientService', () => {
 
     beforeEach(done => {
       responses = [];
-      let sub = service.on('foobar').subscribe(
-        r => {
+      const onError = (e: any) => {
+        done.fail(e);
+        sub.unsubscribe();
+      };
+      const sub = service.on('foobar').subscribe({
+        error: onError,
+        next(r: any) {
           responses.push(r);
-        },
-        done.fail.bind(done)
-      );
+        }
+      });
+
       getSocket().emit('foobar', 'emitted foo');
+
       timer(100)
         .pipe(
           tap(() => {
             getSocket().emit('foobar', 'emitted bar');
           }),
-          switchMapTo(timer(100)),
+          delay(100),
           tap(() => {
             sub.unsubscribe();
             getSocket().emit('foobar', 'emitted qux');
           }),
-          switchMapTo(timer(100))
+          delay(100)
         )
-        .subscribe(noop, done.fail.bind(done), () => {
-          done();
+        .subscribe({
+          complete: () => {
+            sub.unsubscribe();
+            done();
+          },
+          error: onError,
         });
     });
 
@@ -236,18 +207,13 @@ describe('SailsClientService', () => {
   describe('Invalid json', () => {
     let err: any;
 
-    beforeEach(done => {
-      rsp = <any>undefined;
-      service.get('json-error').subscribe(
-        r => {
-          rsp = r;
-          done();
-        },
-        (e: any) => {
-          err = e;
-          done();
-        }
-      );
+    beforeEach(async () => {
+      rsp = undefined as any;
+      try {
+        rsp = await lastValueFrom(service.get('json-error'));
+      } catch (e) {
+        err = e;
+      }
     });
 
     it('Response should be undefined', () => {
@@ -255,50 +221,30 @@ describe('SailsClientService', () => {
     });
 
     it('Error should match regex', () => {
-      expect(err).toMatch(/Could not be parsed to JSON$/);
+      expect(err).toMatch(/Unexpected token .+ in JSON at position/);
     });
   });
 
-  it('Should lowercase headers keys', done => {
-    service.get('success', {headers: {UPPERCASE: 'YES'}})
-      .subscribe(
-        r => {
-          try {
-            expect(r.config.headers).toEqual({uppercase: 'YES'});
-            done();
-          } catch (e) {
-            done.fail(e);
-          }
-        },
-        done.fail.bind(done)
-      );
+  it('Should lowercase headers keys', async () => {
+    const r = await lastValueFrom(service.get('success', {headers: {UPPERCASE: 'YES'}}));
+    expect(r.config.headers).toEqual({uppercase: 'YES'});
   });
 
-  it('should error on 404', done => {
-    service.get(Math.random().toString()).subscribe(
-      () => {
-        done.fail(new Error('Did not throw'));
-      },
-      err => {
-        try {
-          expect(err.status).toBe(404);
-          done();
-        } catch (e) {
-          done.fail(e);
-        }
-      }
-    );
+  it('should error on 404', async () => {
+    try {
+      await lastValueFrom(service.get(Math.random().toString()));
+    } catch (err) {
+      expect(err.status).toBe(404);
+
+      return;
+    }
+
+    throw new Error('Did not throw');
   });
 
   describe('Empty response', () => {
-    beforeEach(done => {
-      service.get('empty').subscribe(
-        r => {
-          rsp = r;
-          done();
-        },
-        done.fail.bind(done)
-      );
+    beforeEach(async () => {
+      rsp = await lastValueFrom(service.get('empty'));
     });
 
     it('Status should be 200', () => {
@@ -321,7 +267,7 @@ describe('SailsClientService', () => {
       ]
     });
 
-    service = TestBed.get(SailsClient);
+    service = TestBed.inject(SailsClient);
     expect(omit(service.configuration.options, ['transports', 'query'])).toEqual({});
   });
 
@@ -348,20 +294,20 @@ describe('SailsClientService', () => {
       ]
     });
 
-    service = TestBed.get(SailsClient);
-    expect(omit(service.configuration.options.query)).toEqual({
+    service = TestBed.inject(SailsClient);
+    expect(omit(service.configuration.options?.query)).toEqual({
       __sails_io_sdk_language: 'javascript',
       __sails_io_sdk_platform: 'browser',
       __sails_io_sdk_version: '1.1.12',
       foo: 'bar.qux'
-    });
+    } as any);
   });
 
   it('Should default to global socket.io', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({});
 
-    service = TestBed.get(SailsClient);
+    service = TestBed.inject(SailsClient);
     expect(service.io instanceof MockClient).toBe(false);
   });
 
@@ -386,7 +332,7 @@ describe('SailsClientService', () => {
       ]
     });
 
-    service = TestBed.get(SailsClient);
+    service = TestBed.inject(SailsClient);
 
     service.get('success').subscribe(
       ({config: {headers}}) => {
@@ -401,32 +347,13 @@ describe('SailsClientService', () => {
     );
   });
 
-  it('Should notify of all errors', done => {
-    service.requestErrors.pipe(take(1)).subscribe(
-      ({status}) => {
-        try {
-          expect(status).toBe(500);
-          done();
-        } catch (e) {
-          done.fail(e);
-        }
-      },
-      done.fail.bind(done)
-    );
-    service.get('error').subscribe(noop, noop);
-  });
+  it('Should notify of all errors', async () => {
+    const errors$ = firstValueFrom(service.requestErrors);
+    service.get('error').subscribe({error: noop});
 
-  for (const p of ['io', 'requestErrors', 'configuration']) {
-    it(`SailsClient.${p} should be non-configurable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p).configurable).toBe(false);
-    });
-    it(`SailsClient.${p} should be enumerable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p).enumerable).toBe(true);
-    });
-    it(`SailsClient.${p} should be non-writable`, () => {
-      expect(Object.getOwnPropertyDescriptor(service, p).writable).toBe(false);
-    });
-  }
+    const {status} = await errors$;
+    expect(status).toBe(500);
+  });
 
   it('configuration should be frozen', () => {
     expect(Object.isFrozen(service.configuration)).toBe(true);
