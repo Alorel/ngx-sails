@@ -20,6 +20,7 @@ prepare:
       - README.md
       - package.json
       - projects/ngx-sails/package.json
+      - projects/ngx-sails/package-lock.json
       - package-lock.json
 
 publish:

@@ -33,7 +33,7 @@ describe('Response abstract', () => {
   it('Should throw on invalid JSON', () => {
     expect(() => {
       new Rsp('foo}', 1);
-    }).toThrowError(/Unexpected token .+ in JSON at position/);
+    }).toThrowError(/Unexpected token/);
   });
 
   it('Should parse string JSON', () => {

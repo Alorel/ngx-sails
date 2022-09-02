@@ -1,3 +1,4 @@
+window.global = window;
 const {Server, Client} = require('mock-socket.io');
 
 const io = new Server();

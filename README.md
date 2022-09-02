@@ -4,10 +4,16 @@ Used the abandoned [ngx-sails](https://github.com/brandom/ngx-sails) as a base.
 
 ## Installation
 
+Angular 14:
+
+```javascript
+npm install @aloreljs/ngx-sails@~2.1.0 socket.io-client@^2.0.0
+```
+
 Angular 13:
 
 ```
-npm install @aloreljs/ngx-sails@^2.0.0 socket.io-client@^2.0.0
+npm install @aloreljs/ngx-sails@~2.0.0 socket.io-client@^2.0.0
 ```
 
 ## Configuration
