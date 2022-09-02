@@ -14,7 +14,7 @@ import {NGX_SAILS_CONFIG} from './tokens/NGX_SAILS_CONFIG';
 describe('SailsClientService', () => {
   let service: SailsClient;
   let client: SocketIOClient.Socket;
-  let rsp: ISailsResponse<any> = <any>undefined;
+  let rsp: ISailsResponse = <any>undefined;
 
   beforeAll(done => {
     client = new MockClient(MockServer);
@@ -116,7 +116,7 @@ describe('SailsClientService', () => {
       const bodyValue = Math.random();
 
       beforeEach(async () => {
-        const ob: Observable<SailsResponse<any>> = method === 'delete' ?
+        const ob: Observable<SailsResponse> = method === 'delete' ?
           service.delete('success', {params: {id: bodyValue}}) :
           service[method]('success', {id: bodyValue});
         rsp = await lastValueFrom(ob);
@@ -221,7 +221,7 @@ describe('SailsClientService', () => {
     });
 
     it('Error should match regex', () => {
-      expect(err).toMatch(/Unexpected token .+ in JSON at position/);
+      expect(err).toMatch(/Expected property name or '}'/);
     });
   });
 
@@ -334,17 +334,17 @@ describe('SailsClientService', () => {
 
     service = TestBed.inject(SailsClient);
 
-    service.get('success').subscribe(
-      ({config: {headers}}) => {
+    service.get('success').subscribe({
+      error: done.fail.bind(done),
+      next({config: {headers}}) {
         try {
           expect(headers).toEqual({default: 'headerino'});
           done();
         } catch (e) {
           done.fail(e);
         }
-      },
-      done.fail.bind(done)
-    );
+      }
+    });
   });
 
   it('Should notify of all errors', async () => {

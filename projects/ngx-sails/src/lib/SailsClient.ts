@@ -24,7 +24,7 @@ export class SailsClient implements OnDestroy {
 
   private readonly _cfg: SocketIOClient.ConnectOpts;
 
-  private readonly _defaultHeaders: AnyObject<any>;
+  private readonly _defaultHeaders: AnyObject;
 
   private readonly _errorsSbj: Subject<SailsError>;
 
@@ -136,7 +136,7 @@ export class SailsClient implements OnDestroy {
     method: RequestMethod,
     data?: AnyObject,
     options: ISailsRequestOpts = {}
-  ): Observable<SailsResponse<any>> {
+  ): Observable<SailsResponse> {
     return sendRequest<any>(
       clean({
         data: clean(data),
@@ -159,7 +159,7 @@ function sendRequest<T>(
   const {method} = request;
   request.headers = lowerCaseHeaders(request.headers);
 
-  return new Observable<SailsResponse<any>>(subscriber => {
+  return new Observable<SailsResponse>(subscriber => {
     let unsubscribed = false;
 
     io.emit(method, request, (rawResponse: IRawSailsResponse) => {
@@ -185,7 +185,7 @@ function sendRequest<T>(
   });
 }
 
-function lowerCaseHeaders(headers?: AnyObject<any>): AnyObject<any> {
+function lowerCaseHeaders(headers?: AnyObject): AnyObject {
   if (headers) {
     let lowercased: string;
     const out = {...headers};
@@ -204,7 +204,7 @@ function lowerCaseHeaders(headers?: AnyObject<any>): AnyObject<any> {
   return headers!;
 }
 
-function clean<T extends AnyObject<any>>(obj?: T): T {
+function clean<T extends AnyObject>(obj?: T): T {
   if (obj) {
     const out = {...obj};
     for (const [key, value] of Object.entries(out)) {
