@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/Alorel/ngx-sails/compare/2.0.1...2.1.0) (2022-09-05)
+
+
+### Features
+
+* Repackage for Angular 14 ([3ae07f7](https://github.com/Alorel/ngx-sails/commit/3ae07f7c3f255d43d16ec5f7572c27270e6a0753))
+
 ## [2.0.1](https://github.com/Alorel/ngx-sails/compare/2.0.0...2.0.1) (2022-01-24)
 
 
