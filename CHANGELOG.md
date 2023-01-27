@@ -1,3 +1,20 @@
+# [3.0.0](https://github.com/Alorel/ngx-sails/compare/2.1.0...3.0.0) (2023-01-27)
+
+
+### ci
+
+* Add CodeQL action ([cf245f9](https://github.com/Alorel/ngx-sails/commit/cf245f94fa96fbf6cb1e47a135301b779a764e65))
+
+
+### Features
+
+* Repackage for Angular 15 ([974f0ae](https://github.com/Alorel/ngx-sails/commit/974f0ae9c5580c9409fa39f68750913de4a8076b))
+
+
+### BREAKING CHANGES
+
+* Angular 14 no longer supported
+
 # [2.1.0](https://github.com/Alorel/ngx-sails/compare/2.0.1...2.1.0) (2022-09-05)
 
 
