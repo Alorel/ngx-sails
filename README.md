@@ -4,6 +4,12 @@ Used the abandoned [ngx-sails](https://github.com/brandom/ngx-sails) as a base.
 
 ## Installation
 
+Angular 15:
+
+```javascript
+npm install @aloreljs/ngx-sails@~3.0.0 socket.io-client@^2.0.0
+```
+
 Angular 14:
 
 ```javascript
