@@ -35,7 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "@angular/animations": "^15.1.2",
-    "@angular/common": "^15.1.2",
+    "@angular/common": "^15.2.4",
     "@angular/compiler": "^15.1.2",
     "@angular/core": "^15.1.2",
     "@angular/forms": "^15.1.2",
