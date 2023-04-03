@@ -10,7 +10,27 @@ updates:
     directory: "/"
     open-pull-requests-limit: 20
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    ignore:
+      - dependency-name: "@angular/common"
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
+      - dependency-name: "@angular-devkit/*"
+      - dependency-name: "@angular/animations"
+      - dependency-name: "@angular/cli"
+      - dependency-name: "@angular/compiler"
+      - dependency-name: "@angular/compiler-cli"
+      - dependency-name: "@angular/core"
+      - dependency-name: "@angular/forms"
+      - dependency-name: "@angular/platform-browser"
+      - dependency-name: "@angular/platform-browser-dynamic"
+      - dependency-name: ng-packagr
+      - dependency-name: "typescript"
+      - dependency-name: "zone.js"
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-patch
   - package-ecosystem: "github-actions" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
