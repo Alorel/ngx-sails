@@ -64,7 +64,7 @@
     "karma-chrome-launcher": "^3.1.1",
     "karma-coverage": "^2.2.0",
     "karma-jasmine": "^5.1.0",
-    "karma-jasmine-html-reporter": "^2.0.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
     "lodash-es": "^4.17.21",
     "mock-socket.io": "~1.1.0",
     "ng-packagr": "^15.1.1",
