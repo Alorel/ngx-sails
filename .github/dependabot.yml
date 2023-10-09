@@ -11,6 +11,9 @@ updates:
     open-pull-requests-limit: 20
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: deps
+      prefix-development: "deps(dev)"
     ignore:
       - dependency-name: "@angular/common"
         update-types:
@@ -25,13 +28,17 @@ updates:
       - dependency-name: "@angular/forms"
       - dependency-name: "@angular/platform-browser"
       - dependency-name: "@angular/platform-browser-dynamic"
-      - dependency-name: ng-packagr
+      - dependency-name: "ng-packagr"
       - dependency-name: "typescript"
       - dependency-name: "zone.js"
       - dependency-name: "*"
         update-types:
+          - version-update:semver-minor
           - version-update:semver-patch
   - package-ecosystem: "github-actions" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: deps
+      prefix-development: "deps(dev)"
