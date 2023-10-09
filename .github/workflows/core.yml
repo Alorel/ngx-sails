@@ -13,12 +13,12 @@ jobs:
       - name: Test
         uses: ./.github/actions/test
         with:
-          node-version: 18
+          node-version: 20
           gh-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload coverage
         if: ${{ runner.os != 'windows-latest' }}
         continue-on-error: true
-        uses: coverallsapp/github-action@v2.0.0
+        uses: coverallsapp/github-action@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: node-${{ inputs.node-version }}-on-${{ runner.os }}-${{ github.event_name }}
@@ -37,12 +37,12 @@ jobs:
       - name: Init NPM
         uses: ./.github/actions/init-npm
         with:
-          node-version: 18
+          node-version: 20
           gh-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         name: Reconfig Node
         with:
-          node-version: 18
+          node-version: 20
           registry-url: https://registry.npmjs.org
       - name: Release
         run: npm run release

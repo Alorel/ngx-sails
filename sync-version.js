@@ -9,7 +9,7 @@ try {
 } catch (e) {
 }
 
-const {promises: fs} = require('fs');
+const {promises: fs} = require('node:fs');
 
 Promise
   .all(
