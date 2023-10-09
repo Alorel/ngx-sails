@@ -28,14 +28,10 @@
     "@types/socket.io-client": "^1.4.36"
   },
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0",
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0",
     "rxjs": "^7.4.0",
     "socket.io-client": "^2.0.0"
-  },
-  "devDependencies": {
-    "@angular/platform-browser-dynamic": "^14.2.0",
-    "zone.js": "~0.11.4"
   },
   "publishConfig": {
     "access": "public"
