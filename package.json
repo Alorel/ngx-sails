@@ -6,6 +6,7 @@
     "build": "ng build ngx-sails",
     "watch": "npm --scripts-prepend-node-path=auth run build -- --watch",
     "release": "semantic-release",
+    "release:dry": "semantic-release --dry-run",
     "test": "node --no-deprecation ./node_modules/.bin/ng test ngx-sails --progress --code-coverage",
     "test:watch": "npm --scripts-prepend-node-path=auth run test -- --watch"
   },
@@ -45,7 +46,7 @@
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
-    "@alorel-personal/conventional-changelog-alorel": "^2.1.3",
+    "@alorel-personal/conventional-changelog-alorel": "^3.0.0",
     "@angular-builders/custom-webpack": "^16.0.1",
     "@angular-devkit/build-angular": "^16.2.5",
     "@angular/cli": "^16.2.5",
