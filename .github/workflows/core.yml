@@ -1,24 +1,35 @@
 name: Core
 on:
-  - push
-  - pull_request
+  push:
+    branches: [master]
+  pull_request: {}
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test ubuntu-latest/Node 18
+    name: Test
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Test
         uses: ./.github/actions/test
         with:
           node-version: 20
           gh-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release dry run
+        run: npm run release:dry
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          
       - name: Upload coverage
         if: ${{ runner.os != 'windows-latest' }}
         continue-on-error: true
-        uses: coverallsapp/github-action@v2.2.0
+        uses: coverallsapp/github-action@v2.2.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: node-${{ inputs.node-version }}-on-${{ runner.os }}-${{ github.event_name }}
@@ -31,9 +42,10 @@ jobs:
       - test
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1000
+          persist-credentials: false
       - name: Init NPM
         uses: ./.github/actions/init-npm
         with:
@@ -47,6 +59,6 @@ jobs:
       - name: Release
         run: npm run release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
