@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/Alorel/ngx-sails/compare/3.0.0...4.0.0) (2023-10-10)
+
+
+### Maintenance
+
+* Update to Angular 16 ([36d71d3](https://github.com/Alorel/ngx-sails/commit/36d71d360c5e4bc072e86f99a92224318306ea92)), closes [#242](https://github.com/Alorel/ngx-sails/issues/242)
+
+
+### BREAKING CHANGES
+
+* Angular 15 no longer supported
+
 # [3.0.0](https://github.com/Alorel/ngx-sails/compare/2.1.0...3.0.0) (2023-01-27)
 
 
