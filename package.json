@@ -70,7 +70,7 @@
     "mock-socket.io": "~1.1.0",
     "ng-packagr": "^16.2.3",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "semantic-release": "^22.0.5",
+    "semantic-release": "^23.0.1",
     "typescript": "~5.1.6"
   }
 }
